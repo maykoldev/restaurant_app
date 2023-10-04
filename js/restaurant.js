@@ -56,7 +56,7 @@ function guardarCliente(){
 
 function mostrarSecciones(){
     const secciones=document.querySelectorAll('.d-none')
-    console.log(secciones);
+    //console.log(secciones);
 
     secciones.forEach(seccion=>seccion.classList.remove('d-none'));
 }
@@ -81,7 +81,7 @@ function verMenu(menu){
         nombre.classList.add('col-md-4', 'py-3')
 
         const precio = document.createElement('div');
-        precio.textContent = pos.precio;
+        precio.textContent ='$'+ pos.precio;
         precio.classList.add('col-md-3', 'py-3')
 
         const categoria = document.createElement('div');
@@ -110,4 +110,121 @@ function verMenu(menu){
         contenido.appendChild(fila);
 
     })
+}
+
+function agregarOrden(producto){
+    let {pedido}= cliente;
+
+   // const {producto} = cliente.pedido;
+
+    console.log(pedido)
+    
+    if (producto.cantidad>0) {
+        //validar que el producto exista
+        if(pedido.some(item=>item.id===producto.id)){
+            //haya producto
+            const pedidoActualizado = pedido.map(i=>{
+                if (i.id===producto.id){
+                    i.cantidad = producto.cantidad;
+                }
+                return i;
+            })
+
+            cliente.pedido = [...pedidoActualizado]
+        }else{
+            //caso en que no exita el producto
+            //agregamos el nuevo producto 
+            cliente.pedido = {...pedido,producto};
+            console.log(cliente)
+        }
+    } else {
+        //caso en que cantidad sea cero
+        const resultado = pedido.filter(item=>item.id !== producto.id);
+        cliente.pedido = resultado;
+    }
+
+    limpiarHTML();
+
+
+    //if (cliente.pedido.length){
+        actualizarResumen();
+    //}else{
+        //console.log('pedido vacio')
+    //}
+
+}
+
+function actualizarResumen (){
+    const contenido = document.querySelector('#resumen .contenido');
+    const resumen = document.createElement('div')
+
+    //mostrar la mesa
+    const mesa = document.createElement('p');
+    mesa.textContent = 'Mesa: ';
+    mesa.classList.add('fw-bold');
+
+    const mesaCliente = document.createElement('span');
+    mesaCliente.textContent = cliente.mesa;
+    mesa.appendChild(mesaCliente);
+
+    //mostrar hora
+    const hora = document.createElement('p');
+    hora.textContent = 'Hora: ';
+    hora.classList.add('fw-bold');
+
+    const horaCliente = document.createElement('spam');
+    horaCliente.textContent = cliente.hora;
+    hora.appendChild(horaCliente);
+
+    //MOSTRAR LOS ITEM DEL MENU
+
+    const heading = document.createElement ('h3');
+    heading.textContent = 'Pedido: ';
+    heading.classList.add(my-4);
+
+    //producto pedido
+    const {pedido}= cliente;
+    pedido.forEach(item=>{
+        const {nombre, cantidad, precio,id} = item;
+        
+        const lista = document.createElement('li');
+        lista.classList.add('list-group-item');
+
+        const nombreP = document.createElement('h4');
+        nombreP.textContent = nombre;
+        nombreP.classList.add('text-center','my-4');
+
+        const cantidadP = document.createElement('p');
+        cantidadP.classList.add('fw-bold');
+        cantidadP.textContent='Precio: ';
+
+        const cantidadValor = document.createElement('spam');
+        cantidadValor.textContent = cantidad;
+
+        const precioP = document.createElement('p');
+        precioP.classList('fw-bold');
+        precioP.textContent='Precio: ';
+        
+        const precioValor = document.createElement('spam');
+        precioValor.textContent = `$${precio}`;
+
+
+
+    })
+
+    
+
+    
+    resumen.appendChild(mesa);
+    resumen.appendChild(hora);
+    resumen.appendChild(heading);
+    contenido.appendChild(resumen);
+
+}
+
+function limpiarHTML(){
+    const contenido = document.querySelector('#resumen .contenido');
+    while (contenido.firstChild){
+        contenido.removeChild(contenido.firstChild);
+    }
 }
