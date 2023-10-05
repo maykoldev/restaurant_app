@@ -109,13 +109,13 @@
         },
         {
             "id":19,
-            "nombre":"helado de Fresa",
+            "nombre":"Helado de Fresa",
             "precio":6,
             "categoria":2
         },
         {
             "id":20,
-            "nombre":"helado de Chocolate",
+            "nombre":"Helado de Chocolate",
             "precio":6,
             "categoria":2
         }
