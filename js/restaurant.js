@@ -134,7 +134,7 @@ function agregarOrden(producto){
         }else{
             //caso en que no exita el producto
             //agregamos el nuevo producto 
-            cliente.pedido = {...pedido,producto};
+            cliente.pedido = [...pedido,producto];
             console.log(cliente)
         }
     } else {
